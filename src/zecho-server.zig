@@ -121,6 +121,7 @@ const Zecho = struct {
         self.barrier = Barrier{};
         self.barrier.start();
 
+        log.info("Running...", .{});
         var last_cleanup = std.time.milliTimestamp();
         while(!is_exiting) {
             if((std.time.milliTimestamp() - last_cleanup) > 5000) {
@@ -154,6 +155,7 @@ const Zecho = struct {
         var i: usize = 0;
         var clean: usize = 0;
         var honored: std.ArrayList(i32) = std.ArrayList(i32).init(self.allocator);
+        defer honored.deinit();
         while (it.next()) |client| : (i += 1) {
             if(client.value_ptr.*.dead) {
                 var fd = client.value_ptr.*.fd;
