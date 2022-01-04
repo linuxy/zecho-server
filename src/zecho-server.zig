@@ -41,8 +41,23 @@ const build_version =
     \\
 ;
 
+//Ignore SIGPIPE
+var ign = os.Sigaction{
+    .handler = .{.sigaction = os.SIG.IGN },
+    .mask = os.empty_sigset,
+    .flags = 0,
+};
+
+//Handle SIGINT
+var act = os.Sigaction{
+    .handler = .{.sigaction = handleSignal },
+    .mask = os.empty_sigset,
+    .flags = 0,
+};
+
 pub fn main() !void {
-    _ = c.signal(c.SIGINT, handleInterrupt);
+    os.sigaction(os.SIG.INT, &act, null);
+    os.sigaction(os.SIG.PIPE, &ign, null);
     var general_purpose_allocator = std.heap.GeneralPurposeAllocator(.{}){};
     var gpa = general_purpose_allocator.allocator();
 
@@ -232,10 +247,12 @@ const Zecho = struct {
     }
 };
 
-fn handleInterrupt(signal: c_int) callconv(.C) void {
+fn handleSignal(sig: i32, sig_info: *const os.siginfo_t, ctx_ptr: ?*const anyopaque) callconv(.C) void {
     is_exiting = true;
     log.info("Requesting exit.", .{});
-    _ = signal;
+    _ = sig;
+    _ = sig_info;
+    _ = ctx_ptr;
 }
 
 const Client = struct {
