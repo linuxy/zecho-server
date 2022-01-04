@@ -13,13 +13,7 @@ const c = @cImport({
 
 pub const log_level: std.log.Level = .info;
 
-const is_windows = builtin.os.tag == .windows;
-const is_darwin = builtin.os.tag.isDarwin();
-const is_linux = builtin.os.tag == .linux;
-
 var is_exiting = false;
-
-pub const io_mode = .evented;
 
 const usage =
     \\zecho server
