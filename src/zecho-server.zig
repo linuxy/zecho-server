@@ -7,10 +7,6 @@ const io = std.io;
 const AutoArrayHashMapUnmanaged = std.AutoArrayHashMapUnmanaged;
 const log = std.log.scoped(.zecho);
 
-const c = @cImport({
-    @cInclude("signal.h");
-});
-
 pub const log_level: std.log.Level = .info;
 
 var is_exiting = false;
