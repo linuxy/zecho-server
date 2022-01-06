@@ -14,5 +14,5 @@ usage: zecho-server [ -a <address> ] [ -p <port> ]
 
 Running zecho-server:
 ```
-$ ./zig-out/bin/zecho -a 127.0.0.1 -p 9999
+$ ./zig-out/bin/zecho-server -a 127.0.0.1 -p 9999
 ```
